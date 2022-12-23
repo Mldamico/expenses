@@ -1,12 +1,14 @@
+import { IconType } from "react-icons";
+
 interface Plan {
   title: string;
-  price: number;
+  price: string;
   perks: string[];
-  icon: string;
+  icon: string | IconType;
 }
 
 function PricingPlan({ title, price, perks, icon }: Plan) {
-  const Icon = icon;
+  let Icon = icon;
   return (
     <article>
       <header>
