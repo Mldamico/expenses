@@ -27,8 +27,4 @@ const ExpensesLayout = () => {
   );
 };
 
-export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: expensesStyles },
-];
-
 export default ExpensesLayout;
