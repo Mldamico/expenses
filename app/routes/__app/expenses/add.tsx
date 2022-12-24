@@ -14,4 +14,6 @@ const AddExpensePage = () => {
   );
 };
 
+export async function action() {}
+
 export default AddExpensePage;
