@@ -1,4 +1,4 @@
-import { Link } from "@remix-run/react";
+import { Form, Link } from "@remix-run/react";
 import { IExpense } from "~/interfaces/expense";
 
 function ExpenseListItem({ id, title, amount }: IExpense) {
@@ -13,7 +13,10 @@ function ExpenseListItem({ id, title, amount }: IExpense) {
         <p className="expense-amount">${parseFloat(amount).toFixed(2)}</p>
       </div>
       <menu className="expense-actions">
-        <button onClick={deleteExpenseItemHandler}>Delete</button>
+        <Form method="delete" action={`/expenses/${id}`}>
+          <button>Delete</button>
+        </Form>
+        {/* <button onClick={deleteExpenseItemHandler}>Delete</button> */}
         <Link to={id}>Edit</Link>
       </menu>
     </article>
