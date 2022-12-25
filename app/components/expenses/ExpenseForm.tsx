@@ -15,6 +15,7 @@ function ExpenseForm() {
   const validationErrors = useActionData();
   const navigation = useNavigation();
   const { id } = useParams();
+  const params = useParams();
 
   // const expenseData: IExpense = useLoaderData();
 
@@ -26,6 +27,10 @@ function ExpenseForm() {
   const expenseData: IExpense = expenses.find(
     (expense: IExpense) => expense.id === id
   );
+
+  if (params.id && !expenseData) {
+    return <p>Invalid expense ID</p>;
+  }
   const defaultValues = expenseData
     ? {
         title: expenseData.title,

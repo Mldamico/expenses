@@ -1,12 +1,12 @@
-import { LinksFunction } from "@remix-run/node";
 import { Link, Outlet, useLoaderData } from "@remix-run/react";
 import ExpensesList from "~/components/expenses/ExpensesList";
-import expensesStyles from "~/styles/expenses.css";
 import { FaPlus, FaDownload } from "react-icons/fa";
 import { getExpenses } from "~/data/expenses.server";
 
 const ExpensesLayout = () => {
   const expenses = useLoaderData();
+
+  const hasExpenses = expenses && expenses.length > 0;
   return (
     <>
       <Outlet />
@@ -21,7 +21,15 @@ const ExpensesLayout = () => {
             <span>Load Raw Data</span>
           </a>
         </section>
-        <ExpensesList expenses={expenses} />
+        {hasExpenses && <ExpensesList expenses={expenses} />}
+        {!hasExpenses && (
+          <section id="no-expenses">
+            <h1>No Expenses Found</h1>
+            <p>
+              Start <Link to="add">Adding some</Link> today.
+            </p>
+          </section>
+        )}
       </main>
     </>
   );
@@ -29,6 +37,15 @@ const ExpensesLayout = () => {
 
 export default ExpensesLayout;
 
-export function loader() {
-  return getExpenses();
+export async function loader() {
+  const expenses = await getExpenses();
+
+  // if (!expenses || expenses.length === 0) {
+  //   throw json(
+  //     { message: "Could not find any expenses" },
+  //     { status: 404, statusText: "No Expenses Found" }
+  //   );
+  // }
+
+  return expenses;
 }

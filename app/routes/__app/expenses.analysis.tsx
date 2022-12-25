@@ -1,5 +1,9 @@
 import Chart from "~/components/expenses/Chart";
 import ExpenseStatistics from "~/components/expenses/ExpenseStadistics";
+import { useCatch, useLoaderData } from "@remix-run/react";
+import { getExpenses } from "~/data/expenses.server";
+import { json } from "@remix-run/node";
+import Error from "~/components/util/Error";
 
 const DUMMY_EXPENSES = [
   {
@@ -17,12 +21,41 @@ const DUMMY_EXPENSES = [
 ];
 
 const AnalysisExpensePage = () => {
+  const expenses = useLoaderData();
+  console.log(expenses);
   return (
     <main>
-      <Chart expenses={DUMMY_EXPENSES} />
-      <ExpenseStatistics expenses={DUMMY_EXPENSES} />
+      <Chart expenses={expenses} />
+      <ExpenseStatistics expenses={expenses} />
     </main>
   );
 };
 
 export default AnalysisExpensePage;
+
+export async function loader() {
+  const expenses = await getExpenses();
+
+  if (!expenses || expenses.length === 0) {
+    throw json(
+      { message: "Could not find any expenses" },
+      { status: 404, statusText: "No Expenses Found" }
+    );
+  }
+
+  return expenses;
+}
+
+export function CatchBoundary() {
+  const caughtResponse = useCatch();
+  return (
+    <main>
+      <Error title={caughtResponse.statusText}>
+        <p>
+          {caughtResponse.data?.message ||
+            "Something went wrong. Could not load expenses"}
+        </p>
+      </Error>
+    </main>
+  );
+}
