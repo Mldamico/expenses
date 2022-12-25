@@ -3,6 +3,8 @@ import {
   Link,
   useActionData,
   useLoaderData,
+  useMatches,
+  useParams,
   useTransition as useNavigation,
 } from "@remix-run/react";
 import { DetailedHTMLProps, FormEventHandler, FormHTMLAttributes } from "react";
@@ -12,8 +14,15 @@ function ExpenseForm() {
   const today = new Date().toISOString().slice(0, 10); // yields something like 2023-09-10
   const validationErrors = useActionData();
   const navigation = useNavigation();
-  const expenseData: IExpense = useLoaderData();
-
+  const { id } = useParams();
+  // const expenseData: IExpense = useLoaderData();
+  const matches = useMatches();
+  const expenses = matches.find(
+    (match) => match.id === "routes/__app/expenses"
+  )!.data;
+  const expenseData: IExpense = expenses.find(
+    (expense: IExpense) => expense.id === id
+  );
   const defaultValues = expenseData
     ? {
         title: expenseData.title,

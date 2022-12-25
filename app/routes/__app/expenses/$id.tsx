@@ -19,10 +19,10 @@ const ExpensePage = () => {
 
 export default ExpensePage;
 
-export function loader({ params }: LoaderArgs) {
-  const expenseId = params.id;
-  if (!expenseId) {
-    throw Error("No Id");
-  }
-  return getExpense(expenseId);
-}
+// export function loader({ params }: LoaderArgs) {
+//   const expenseId = params.id;
+//   if (!expenseId) {
+//     throw Error("No Id");
+//   }
+//   return getExpense(expenseId);
+// }
