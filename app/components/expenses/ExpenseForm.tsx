@@ -15,11 +15,14 @@ function ExpenseForm() {
   const validationErrors = useActionData();
   const navigation = useNavigation();
   const { id } = useParams();
+
   // const expenseData: IExpense = useLoaderData();
+
   const matches = useMatches();
   const expenses = matches.find(
     (match) => match.id === "routes/__app/expenses"
   )!.data;
+
   const expenseData: IExpense = expenses.find(
     (expense: IExpense) => expense.id === id
   );
