@@ -2,7 +2,7 @@ import AuthForm from "~/components/auth/AuthForm";
 import { LinksFunction, ActionArgs, redirect } from "@remix-run/node";
 import authStyles from "~/styles/auth.css";
 import { IUser, validateCredentials } from "../../../data/validation.server";
-import { signup } from "~/data/auth.server";
+import { login, signup } from "~/data/auth.server";
 
 const AuthPage = () => {
   return <AuthForm />;
@@ -24,9 +24,9 @@ export async function action({ request }: ActionArgs) {
 
   try {
     if (authMode === "login") {
+      return await login(credentials as unknown as IUser);
     } else {
-      await signup(credentials as unknown as IUser);
-      return redirect("/expenses");
+      return await signup(credentials as unknown as IUser);
     }
   } catch (error: any) {
     if (error.status === 422) {
