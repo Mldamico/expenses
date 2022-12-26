@@ -33,3 +33,33 @@ export function validateExpenseInput(input: IExpense) {
     throw validationErrors;
   }
 }
+
+function isValidEmail(value: string) {
+  return value && value.includes("@");
+}
+
+function isValidPassword(value: string) {
+  return value && value.trim().length >= 7;
+}
+
+export interface IUser {
+  email: string;
+  password: string;
+}
+
+export function validateCredentials(input: IUser) {
+  let validationErrors: IUser = {} as IUser;
+
+  if (!isValidEmail(input.email)) {
+    validationErrors.email = "Invalid email address.";
+  }
+
+  if (!isValidPassword(input.password)) {
+    validationErrors.password =
+      "Invalid password. Must be at least 7 characters long.";
+  }
+
+  if (Object.keys(validationErrors).length > 0) {
+    throw validationErrors;
+  }
+}
