@@ -2,6 +2,7 @@ import { ActionArgs, redirect } from "@remix-run/node";
 import { useNavigate } from "@remix-run/react";
 import ExpenseForm from "~/components/expenses/ExpenseForm";
 import Modal from "~/components/util/Modal";
+import { requireUserSession } from "~/data/auth.server";
 import { addExpense } from "~/data/expenses.server";
 import { validateExpenseInput } from "~/data/validation.server";
 import { IExpense } from "~/interfaces/expense";
@@ -19,6 +20,7 @@ const AddExpensePage = () => {
 };
 
 export async function action({ request }: ActionArgs) {
+  const userId = await requireUserSession(request);
   const formData = await request.formData();
   const expenseData = Object.fromEntries(formData);
   try {
@@ -27,7 +29,7 @@ export async function action({ request }: ActionArgs) {
     return error;
   }
 
-  await addExpense(expenseData as unknown as IExpense);
+  await addExpense(expenseData as unknown as IExpense, userId);
   return redirect("/expenses");
 }
 

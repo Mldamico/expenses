@@ -23,7 +23,6 @@ const DUMMY_EXPENSES = [
 
 const AnalysisExpensePage = () => {
   const expenses = useLoaderData();
-  console.log(expenses);
   return (
     <main>
       <Chart expenses={expenses} />
@@ -35,8 +34,8 @@ const AnalysisExpensePage = () => {
 export default AnalysisExpensePage;
 
 export async function loader({ request }: LoaderArgs) {
-  await requireUserSession(request);
-  const expenses = await getExpenses();
+  const userId = await requireUserSession(request);
+  const expenses = await getExpenses(userId);
 
   if (!expenses || expenses.length === 0) {
     throw json(
