@@ -2,8 +2,9 @@ import Chart from "~/components/expenses/Chart";
 import ExpenseStatistics from "~/components/expenses/ExpenseStadistics";
 import { useCatch, useLoaderData } from "@remix-run/react";
 import { getExpenses } from "~/data/expenses.server";
-import { json } from "@remix-run/node";
+import { json, LoaderArgs } from "@remix-run/node";
 import Error from "~/components/util/Error";
+import { requireUserSession } from "~/data/auth.server";
 
 const DUMMY_EXPENSES = [
   {
@@ -33,7 +34,8 @@ const AnalysisExpensePage = () => {
 
 export default AnalysisExpensePage;
 
-export async function loader() {
+export async function loader({ request }: LoaderArgs) {
+  await requireUserSession(request);
   const expenses = await getExpenses();
 
   if (!expenses || expenses.length === 0) {

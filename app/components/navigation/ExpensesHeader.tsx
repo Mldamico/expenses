@@ -1,4 +1,4 @@
-import { NavLink } from "@remix-run/react";
+import { NavLink, useLoaderData } from "@remix-run/react";
 
 import Logo from "../util/Logo";
 
