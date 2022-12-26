@@ -29,6 +29,32 @@ async function createUserSession(userId: string, redirectPath: string) {
   });
 }
 
+export async function getUserFromSession(request: Request) {
+  const session = await sessionStorage.getSession(
+    request.headers.get("Cookie")
+  );
+
+  const userId = session.get("userId");
+
+  if (!userId) {
+    return null;
+  }
+
+  return userId;
+}
+
+export async function destroyUserSession(request: Request) {
+  const session = await sessionStorage.getSession(
+    request.headers.get("Cookie")
+  );
+
+  return redirect("/", {
+    headers: {
+      "Set-Cookie": await sessionStorage.destroySession(session),
+    },
+  });
+}
+
 export async function signup({ email, password }: IUser) {
   const existingUser = await prisma.user.findFirst({ where: { email } });
 
