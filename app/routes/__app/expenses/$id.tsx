@@ -9,6 +9,7 @@ import {
 } from "~/data/expenses.server";
 import { validateExpenseInput } from "~/data/validation.server";
 import { IExpense } from "~/interfaces/expense";
+import type { MetaFunction } from "@remix-run/node";
 
 const ExpensePage = () => {
   const navigate = useNavigate();
@@ -52,3 +53,13 @@ export async function action({ params, request }: ActionArgs) {
     return { expenseId };
   }
 }
+
+export const meta: MetaFunction = ({ params, location, data, parentsData }) => {
+  const expense = parentsData["routes/__app/expenses"].find(
+    (expense: IExpense) => expense.id === params.id
+  );
+  return {
+    title: expense.title,
+    description: "Update expense",
+  };
+};

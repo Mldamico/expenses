@@ -39,4 +39,7 @@ export default function PricingPage() {
   );
 }
 
-export function meta() {}
+export const meta = () => ({
+  title: "Expenses - Marketing",
+  description: "See our pricing plans",
+});
